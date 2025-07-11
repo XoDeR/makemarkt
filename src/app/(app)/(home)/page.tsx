@@ -14,7 +14,12 @@ export default async function Home() {
 
   const data = await payload.find({
     collection: "categories",
-  })
+    where: {
+      parent: {
+        exists: false,
+      },
+    },
+  });
 
   return (
     <div className="p-4">
