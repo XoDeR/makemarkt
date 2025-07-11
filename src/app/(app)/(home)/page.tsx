@@ -18,7 +18,9 @@ export default async function Home() {
 
   return (
     <div className="p-4">
-      <div></div>
+      <div>
+        {JSON.stringify(data, null, 2)}
+      </div>
       <div className="flex flex-col gap-y-4">
         <div>
           <Button variant="elevated">
