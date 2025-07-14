@@ -9,7 +9,7 @@ export const Categories = ({
 }: Props) => {
   return (
     <div>
-      Categories
+      Categories: {JSON.stringify(data, null, 2)}
     </div>
 
   )
