@@ -10,11 +10,8 @@ export const Categories = ({
   data
 }: Props) => {
   return (
-    <>
-      <div>
-        Categories: {JSON.stringify(data, null, 2)}
-      </div>
-      <div>
+    <div className="relative w-full">
+      <div className="flex flex-nowrap items-center">
         {data.map((category: Category) => (
           <div key={category.id}>
             <CategoryDropdown
@@ -25,6 +22,6 @@ export const Categories = ({
           </div>
         ))}
       </div>
-    </>
+    </div>
   )
 }
