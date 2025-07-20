@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:types": "tsx scripts/runPayloadTypes.ts",
-    "db:fresh": "payload migrate:fresh"
+    "generate:types2": "tsx scripts/runPayloadTypes.ts",
+    "generate:types": "bunx tsx ./node_modules/payload/bin.js generate:types",
+    "db:fresh": "bunx tsx ./node_modules/payload/bin.js migrate:fresh",
+    "db:refresh": "bunx tsx ./node_modules/payload/bin.js migrate:refresh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
