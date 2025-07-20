@@ -10,7 +10,9 @@
     "generate:types2": "tsx scripts/runPayloadTypes.ts",
     "generate:types": "bunx tsx ./node_modules/payload/bin.js generate:types",
     "db:fresh": "bunx tsx ./node_modules/payload/bin.js migrate:fresh",
-    "db:refresh": "bunx tsx ./node_modules/payload/bin.js migrate:refresh"
+    "db:refresh": "bunx tsx ./node_modules/payload/bin.js migrate:refresh",
+    "db:seed_": "bun run src/seed.ts",
+    "db:seed": "tsx src/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -48,6 +50,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.0",
     "embla-carousel-react": "^8.6.0",
     "graphql": "^16.8.1",
     "input-otp": "^1.4.2",
