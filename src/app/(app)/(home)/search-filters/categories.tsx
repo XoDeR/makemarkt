@@ -1,9 +1,10 @@
 import { Category } from "@/payload-types";
 import { Dice1 } from "lucide-react";
 import { CategoryDropdown } from "./category-dropdown";
+import { CustomCategory } from "../types";
 
 interface Props {
-  data: any;
+  data: CustomCategory[];
 };
 
 export const Categories = ({
