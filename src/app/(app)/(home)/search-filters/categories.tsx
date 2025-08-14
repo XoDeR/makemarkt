@@ -3,6 +3,9 @@
 import { CategoryDropdown } from "./category-dropdown";
 import { CustomCategory } from "../types";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ListFilterIcon } from "lucide-react";
 
 interface Props {
   data: CustomCategory[];
@@ -38,14 +41,30 @@ export const Categories = ({
       let visible = 0;
 
       for (const item of items) {
-        const width = item.getBoundingClientRect();
-      } 
+        const width = item.getBoundingClientRect().width;
+
+        if (totalWidth + width > availableWidth) break;
+        totalWidth += width;
+        visible++;
+      }
+
+      setVisibleCount(visible);
     };
-  }, []);
+
+    const resizeObserver = new ResizeObserver(calculateVisible);
+    resizeObserver.observe(containerRef.current!);
+
+    return () => resizeObserver.disconnect();
+  }, [data.length]);
   
   return (
     <div className="relative w-full">
-      <div className="flex flex-nowrap items-center">
+      {/* Hidden div to measure all items */}
+      <div
+        ref={measureRef} 
+        className="absolute opacity-0 pointer-events-none flex"
+        style={{ position: "fixed", top: -9999, left: -9999 }}
+      >
         {data.map((category) => (
           <div key={category.id}>
             <CategoryDropdown
@@ -55,6 +74,36 @@ export const Categories = ({
             />
           </div>
         ))}
+      </div>
+
+      {/* Visible items */}
+      <div
+        ref={containerRef} 
+        className="flex flex-nowrap items-center"
+        onMouseEnter={() => setIsAnyHovered(true)}
+        onMouseLeave={() => setIsAnyHovered(false)}
+      >
+        {data.slice(0, visibleCount).map((category) => (
+          <div key={category.id}>
+            <CategoryDropdown
+              category={category}
+              isActive={activeCategory === category.slug}
+              isNavigationHovered={isAnyHovered}
+            />
+          </div>
+        ))}
+
+        <div ref={viewAllRef} className="shrink-0">
+          <Button
+            className={cn(
+              "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+              isActiveCategoryHidden && !isAnyHovered && "bg-white border-primary"
+            )}
+          >
+            View All
+            <ListFilterIcon className="ml-2"/>
+          </Button>
+        </div>
       </div>
     </div>
   )
