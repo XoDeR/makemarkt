@@ -61,7 +61,7 @@ export const Categories = ({
   return (
     <div className="relative w-full">
       {/* Categories sidebar */}
-      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data}/>
       
       {/* Hidden div to measure all items */}
       <div
