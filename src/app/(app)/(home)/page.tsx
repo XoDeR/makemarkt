@@ -5,12 +5,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
+import { getQueryClient, trpc } from "@/trpc/server";
 
-export default function Home() {
+export default async function Home() {
+  const queryClient = getQueryClient();
+  const categories = await queryClient.fetchQuery(trpc.categories.getMany.queryOptions());
+  
   return (
     <div className="p-4">
       <div>
-        Home page
+        {JSON.stringify(categories, null, 2)}
       </div>
       <div className="flex flex-col gap-y-4">
         <div>
