@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div className="p-4">
       <div>
-        {JSON.stringify(categories.data, null, 2)}
+        {/* {JSON.stringify(categories.data, null, 2)} */}
       </div>
       <div className="flex flex-col gap-y-4">
         <div>
