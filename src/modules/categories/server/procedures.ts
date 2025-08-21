@@ -1,16 +1,9 @@
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
-
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { Category } from "@/payload-types";
 
 export const categoriesRouter = createTRPCRouter({
-  getMany: baseProcedure.query(async () => {
-    const payload = await getPayload({
-      config: configPromise,
-    });
-
-    const data = await payload.find({
+  getMany: baseProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.find({
       collection: "categories",
       depth: 1, // Load (populate) only 1 level of subcategories: subcategories.[0] will be a type of Category
       pagination: false,
