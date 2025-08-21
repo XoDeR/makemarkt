@@ -15,10 +15,9 @@ import { useQuery } from "@tanstack/react-query";
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  //data: CustomCategory[]; // Temporary. This will be removed later.
 }
 
-export const CategoriesSidebar = ({ open, onOpenChange, /*data*/ }: Props) => {
+export const CategoriesSidebar = ({ open, onOpenChange }: Props) => {
   const trpc = useTRPC();
   const {data} = useQuery(trpc.categories.getMany.queryOptions());
   
