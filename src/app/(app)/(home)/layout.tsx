@@ -14,7 +14,7 @@ interface Props {
 const Layout = async ({ children }: Props) => {
   const payload = await getPayload({
     config: configPromise,
-  })
+  });
 
   const data = await payload.find({
     collection: "categories",
