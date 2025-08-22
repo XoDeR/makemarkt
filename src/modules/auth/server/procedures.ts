@@ -1,7 +1,7 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { headers as getHeaders, cookies as getCookies } from "next/headers";
-import z from "zod";
+import { z } from "zod";
 import { AUTH_COOKIE } from "../constants";
 import { registerSchema } from "../schemas";
 
