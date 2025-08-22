@@ -15,7 +15,7 @@
     "db:seed": "tsx src/seed.ts"
   },
   "dependencies": {
-    "@hookform/resolvers": "5.2.0",
+    "@hookform/resolvers": "3.9.0",
     "@payloadcms/db-mongodb": "^3.46.0",
     "@payloadcms/next": "^3.46.0",
     "@payloadcms/payload-cloud": "^3.46.0",
