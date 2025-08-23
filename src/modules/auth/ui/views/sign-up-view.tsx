@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,9 +17,17 @@ import {
 
 import { registerSchema } from "../../schemas";
 import Link from "next/link";
+import { Poppins } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["700"],
+});
 
 export const SignUpView = () => {
   const form = useForm<z.infer<typeof registerSchema>>({
+    mode: "all",
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
@@ -31,6 +40,11 @@ export const SignUpView = () => {
     console.log(values);
   }
 
+  const username = form.watch("username");
+  const usernameErrors = form.formState.errors.username;
+
+  const showPreview = username && !usernameErrors;
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
       <div className="bg-[#F4F4F0] h-screen w-full lg:col-span-3 overflow-y-auto">
@@ -41,12 +55,43 @@ export const SignUpView = () => {
           >
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
-                <span>
-                  make markt
+                <span className={cn("text-2xl font-semibold", poppins.className)}>
+                  makemarkt
                 </span>
               </Link>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="text-base border-none underline"
+              >
+                <Link prefetch href="/sign-in">
+                  Sign in
+                </Link>
+              </Button>
             </div>
-
+            <h1 className="text-4xl font-medium">
+              Join over 10000 creators earning money on MakeMarkt
+            </h1>
+            <FormField
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Username</FormLabel>
+                  <FormControl>
+                    <Input {...field}/>
+                  </FormControl>
+                  <FormDescription
+                    className={cn("hidden", showPreview && "block")}
+                  >
+                    Your store will be available at&nbsp;
+                    <strong>{username}</strong>.shop.com
+                    {/* TODO: proper method to generate URL should be used here */}
+                  </FormDescription>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </div>
