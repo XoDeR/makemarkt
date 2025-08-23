@@ -19,6 +19,8 @@ import { registerSchema } from "../../schemas";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,6 +28,9 @@ const poppins = Poppins({
 });
 
 export const SignUpView = () => {
+  const trpc = useTRPC();
+  const register = useMutation(trpc.auth.register.mutationOptions());
+  
   const form = useForm<z.infer<typeof registerSchema>>({
     mode: "all",
     resolver: zodResolver(registerSchema),
@@ -37,7 +42,7 @@ export const SignUpView = () => {
   });
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log(values);
+    register.mutate(values);
   }
 
   const username = form.watch("username");
@@ -92,6 +97,39 @@ export const SignUpView = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field}/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password"/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <Button
+              disabled={register.isPending}
+              type="submit"
+              size="lg"
+              variant="elevated"
+              className="bg-black text-white hover:bg-pink-400 hover:text-primary"
+            >
+              Create account
+            </Button>
           </form>
         </Form>
       </div>
