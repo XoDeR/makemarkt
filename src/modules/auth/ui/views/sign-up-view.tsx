@@ -20,7 +20,7 @@ import Link from "next/link";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -31,17 +31,19 @@ const poppins = Poppins({
 
 export const SignUpView = () => {
   const router = useRouter();
-  
+
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const register = useMutation(trpc.auth.register.mutationOptions({
     onError: (error) => {
       toast.error(error.message);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(trpc.auth.session.queryFilter());
       router.push("/");
     }
   }));
-  
+
   const form = useForm<z.infer<typeof registerSchema>>({
     mode: "all",
     resolver: zodResolver(registerSchema),
@@ -65,9 +67,9 @@ export const SignUpView = () => {
     <div className="grid grid-cols-1 lg:grid-cols-5">
       <div className="bg-[#F4F4F0] h-screen w-full lg:col-span-3 overflow-y-auto">
         <Form {...form}>
-          <form 
+          <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-8 p-4 lg:p-16"  
+            className="flex flex-col gap-8 p-4 lg:p-16"
           >
             <div className="flex items-center justify-between mb-8">
               <Link href="/">
@@ -95,7 +97,7 @@ export const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Username</FormLabel>
                   <FormControl>
-                    <Input {...field}/>
+                    <Input {...field} />
                   </FormControl>
                   <FormDescription
                     className={cn("hidden", showPreview && "block")}
@@ -104,7 +106,7 @@ export const SignUpView = () => {
                     <strong>{username}</strong>.shop.com
                     {/* TODO: proper method to generate URL should be used here */}
                   </FormDescription>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -114,9 +116,9 @@ export const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Email</FormLabel>
                   <FormControl>
-                    <Input {...field}/>
+                    <Input {...field} />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -126,9 +128,9 @@ export const SignUpView = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password"/>
+                    <Input {...field} type="password" />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
