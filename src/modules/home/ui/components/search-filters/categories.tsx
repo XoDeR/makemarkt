@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ListFilterIcon } from "lucide-react";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { useParams } from "next/navigation";
 
 interface Props {
   data: CategoriesGetManyOutput;
@@ -15,6 +16,9 @@ interface Props {
 export const Categories = ({
   data
 }: Props) => {
+  // "client" way to use params
+  const params = useParams();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const viewAllRef = useRef<HTMLDivElement>(null);
@@ -23,12 +27,12 @@ export const Categories = ({
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // mock active category
-  const activeCategory = "all";
+  const categoryParam = params.category as string | undefined;
+  const activeCategory = categoryParam || "all";
 
   const activeCategoryIndex = data.findIndex((cat) => cat.slug === activeCategory);
   const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;
-  
+
   useEffect(() => {
     const calculateVisible = () => {
       if (!containerRef.current || !measureRef.current || !viewAllRef.current) return;
@@ -57,15 +61,15 @@ export const Categories = ({
 
     return () => resizeObserver.disconnect();
   }, [data.length]);
-  
+
   return (
     <div className="relative w-full">
       {/* Categories sidebar */}
-      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
-      
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
+
       {/* Hidden div to measure all items */}
       <div
-        ref={measureRef} 
+        ref={measureRef}
         className="absolute opacity-0 pointer-events-none flex"
         style={{ position: "fixed", top: -9999, left: -9999 }}
       >
@@ -82,7 +86,7 @@ export const Categories = ({
 
       {/* Visible items */}
       <div
-        ref={containerRef} 
+        ref={containerRef}
         className="flex flex-nowrap items-center"
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
@@ -106,7 +110,7 @@ export const Categories = ({
             onClick={() => setIsSidebarOpen(true)}
           >
             View All
-            <ListFilterIcon className="ml-2"/>
+            <ListFilterIcon className="ml-2" />
           </Button>
         </div>
       </div>
