@@ -1,5 +1,4 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import { Category } from "@/payload-types";
 
 export const productsRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
