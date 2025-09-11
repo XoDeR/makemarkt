@@ -13,3 +13,11 @@ export const ProductList = () => {
     </div>
   )
 }
+
+export const ProductListSkeleton = () => {
+  return (
+    <div>
+      Loading...
+    </div>
+  )
+}
