@@ -1,3 +1,4 @@
+import { Category } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import type { Where } from "payload";
 import { z } from "zod";
@@ -12,6 +13,7 @@ export const productsRouter = createTRPCRouter({
       const categoriesData = await ctx.db.find({
         collection: "categories",
         limit: 1,
+        depth: 1, // Load (populate) only 1 level of subcategories: subcategories.[0] will be a type of Category
         pagination: false,
         where: {
           slug: {
@@ -20,12 +22,26 @@ export const productsRouter = createTRPCRouter({
         }
       });
 
-      const category = categoriesData.docs[0];
+      const formattedData = categoriesData.docs.map((doc) => ({
+        ...doc,
+        subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
+          // To be sure doc is a type of Category because depth: 1 is used
+          ...(doc as Category),
+          subcategories: undefined,
+        })),
+      }));
 
-      if (category) {
-        where["category.slug"] = {
-          equals: category.slug,
-        }
+      const subcategoriesSlugs = [];
+      const parentCategory = formattedData[0];
+
+      if (parentCategory) {
+        subcategoriesSlugs.push(
+          ...parentCategory.subcategories.map((subcategory) => subcategory.slug)
+        )
+      }
+
+      where["category.slug"] = {
+        in: [parentCategory.slug, ...subcategoriesSlugs],
       }
     }
 
