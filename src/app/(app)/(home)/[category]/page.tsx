@@ -3,19 +3,24 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { ProductList, ProductListSkeleton } from "@/modules/products/ui/components/product-list";
 import { Suspense } from "react";
 import { ProductFilters } from "@/modules/products/ui/components/product-filters";
+import { loadProductFilters } from "@/modules/products/hooks/use-product-filters";
+import { SearchParams } from "nuqs/server";
 
 interface Props {
   params: Promise<{
     category: string;
-  }>
+  }>,
+  searchParams: Promise<SearchParams>;
 }
 
-const Page = async ({ params }: Props) => {
+const Page = async ({ params, searchParams }: Props) => {
   const { category } = await params;
+  const filters = await loadProductFilters(searchParams);
 
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
     category,
+    ...filters
   }));
 
   return (
