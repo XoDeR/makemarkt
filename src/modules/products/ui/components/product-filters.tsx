@@ -51,7 +51,8 @@ export const ProductFilters = () => {
   const onClear = () => {
     setFilters({
       minPrice: "",
-      maxPrice: ""
+      maxPrice: "",
+      tags: [],
     });
   }
 
