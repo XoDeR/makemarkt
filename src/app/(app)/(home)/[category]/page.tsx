@@ -3,8 +3,8 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { ProductList, ProductListSkeleton } from "@/modules/products/ui/components/product-list";
 import { Suspense } from "react";
 import { ProductFilters } from "@/modules/products/ui/components/product-filters";
-import { loadProductFilters } from "@/modules/products/hooks/use-product-filters";
 import { SearchParams } from "nuqs/server";
+import { loadProductFilters } from "@/modules/products/search-params";
 
 interface Props {
   params: Promise<{
