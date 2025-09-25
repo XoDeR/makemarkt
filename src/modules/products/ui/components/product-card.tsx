@@ -24,8 +24,8 @@ export const ProductCard = ({
   price,
 }: Props) => {
   return (
-    <Link href="">
-      <div className="border rounded-md bg-white overflow-hidden h-full flex flex-col">
+    <Link href={`/products/${id}`}>
+      <div className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow border rounded-md bg-white overflow-hidden h-full flex flex-col">
         <div className="relative aspect-square">
           <Image
             alt={name}
@@ -34,8 +34,8 @@ export const ProductCard = ({
             className="object-cover"
           />
         </div>
+        <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
         <div className="p-4 border-y flex flex-col gap-3 flex-1">
-          <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
           {/* Should redirect to the user's shop */}
           <div className="flex items-center gap-2" onClick={() => { }}>
             {authorImageUrl && (
@@ -58,7 +58,25 @@ export const ProductCard = ({
             </div>
           )}
         </div>
+        <div className="p-4">
+          <div className="relative px-2 py-1 border bg-pink-400 w-fit">
+            <p className="text-sm font-medium">
+              {/* €{price} */}
+              {new Intl.NumberFormat("nl-NL", {
+                style: "currency",
+                currency: "EUR",
+                maximumFractionDigits: 0,
+              }).format(Number(price))}
+            </p>
+          </div>
+        </div>
       </div>
     </Link>
+  )
+}
+
+export const ProductCardSkeleton = () => {
+  return (
+    <div className="w-full aspect-3/4 bg-neutral-200 rounded-lg animate-pulse" />
   )
 }
