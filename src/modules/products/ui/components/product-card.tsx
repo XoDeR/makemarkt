@@ -34,8 +34,8 @@ export const ProductCard = ({
             className="object-cover"
           />
         </div>
-        <h2 className="text-lg font-medium line-clamp-4">{name}</h2>
-        <div className="p-4 border-y flex flex-col gap-3 flex-1">
+        <h2 className="pt-4 pb-0 px-4 border-t text-lg font-medium line-clamp-4">{name}</h2>
+        <div className="p-4 border-b flex flex-col gap-3 flex-1">
           {/* Should redirect to the user's shop */}
           <div className="flex items-center gap-2" onClick={() => { }}>
             {authorImageUrl && (
