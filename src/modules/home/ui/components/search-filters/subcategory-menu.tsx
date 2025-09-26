@@ -5,13 +5,11 @@ import { CategoriesGetManyOutputSingle } from "@/modules/categories/types";
 interface Props {
   category: CategoriesGetManyOutputSingle;
   isOpen: boolean;
-  position: { top: number; left: number }
 }
 
 export const SubcategoryMenu = ({
   category,
   isOpen,
-  position,
 }: Props) => {
   if (!isOpen || !category.subcategories || category.subcategories.length === 0) {
     return null;
@@ -21,10 +19,10 @@ export const SubcategoryMenu = ({
 
   return (
     <div
-      className="fixed z-100"
+      className="absolute z-100"
       style={{
-        top: position.top,
-        left: position.left,
+        top: "100%",
+        left: 0,
       }}
     >
       {/* Extra space on top not to remove on-hover */}
