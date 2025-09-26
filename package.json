@@ -12,7 +12,8 @@
     "db:fresh": "bunx tsx ./node_modules/payload/bin.js migrate:fresh",
     "db:refresh": "bunx tsx ./node_modules/payload/bin.js migrate:refresh",
     "db:seed_": "bun run src/seed.ts",
-    "db:seed": "tsx src/seed.ts"
+    "db:seed": "tsx src/seed.ts",
+    "db:seed-create-super-admin": "tsx src/seed-create-super-admin.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.0",
