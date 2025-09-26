@@ -34,12 +34,26 @@ export const authRouter = createTRPCRouter({
         });
       }
 
+      const tenant = await ctx.db.create({
+        collection: "tenants",
+        data: {
+          name: input.username,
+          slug: input.username,
+          stripeAccountId: "test",
+        }
+      });
+
       await ctx.db.create({
         collection: "users",
         data: {
           email: input.email,
           username: input.username,
           password: input.password, // payload handles pw hashing itself
+          tenants: [
+            {
+              tenant: tenant.id, // can be extended to multiple tenants, now user can have one store
+            },
+          ],
         },
       });
 
