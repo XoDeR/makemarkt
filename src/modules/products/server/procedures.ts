@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Sort, Where } from "payload";
-import { Category, Media, Tenant } from "@/payload-types";
+import { Category, Media, Product, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { sortValues } from "../search-params";
 import { DEFAULT_LIMIT } from "@/constants";
@@ -18,7 +18,7 @@ export const productsRouter = createTRPCRouter({
         id: input.id,
       });
 
-      return product;
+      return product as Product & { image: Media | null };
     }),
   getMany: baseProcedure.input(z.object({
     cursor: z.number().default(1),
