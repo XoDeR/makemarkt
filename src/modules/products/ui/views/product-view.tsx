@@ -1,8 +1,10 @@
 "use client";
 
+import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   productId: string;
@@ -23,6 +25,32 @@ export const ProductView = ({ productId, tenantSlug }: Props) => {
             fill
             className="object-cover"
           />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-6">
+          <div className="col-span-4">
+            <div className="p-6">
+              <h1 className="text-4xl font-medium">{data.name}</h1>
+            </div>
+            <div className="border-y flex">
+              <div className="px-6 py-4 flex items-center justify-center border-r">
+                <div className="px-2 py-1 border bg-pink-400 w-fit">
+                  <p className="text-base font-medium">
+                    {/* €{data.price} */}
+                    {formatCurrency(data.price)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-6 py-4 flex items-center justify-center lg:border-r">
+                <Link
+                  href={generateTenantUrl(tenantSlug)}
+                  className="flex items-center gap-2"
+                >
+
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
