@@ -1,9 +1,11 @@
 "use client";
 
 import { StarRating } from "@/components/star-rating";
+import { Button } from "@/components/ui/button";
 import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { LinkIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -72,7 +74,78 @@ export const ProductView = ({ productId, tenantSlug }: Props) => {
               </div>
 
             </div>
+
+            {/* Mobile only */}
+            <div className="block lg:hidden px-6 py-4 items-center justify-center border-b">
+              <div className="flex items-center gap-1">
+                <StarRating
+                  rating={3}
+                  iconClassName="size-4"
+                />
+                <p className="text-base font-medium">
+                  {5} ratings
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {data.description ? (
+                <p>{data.description}</p>
+              ) : (
+                <p className="font-medium text-muted-foreground italic">
+                  No description provided
+                </p>
+              )}
+            </div>
+
           </div>
+
+          <div className="col-span-2">
+            <div className="border-t lg:border-t-0 lg:border-l h-full">
+              <div className="flex flex-col gap-4 p-6 border-b">
+                <div className="flex flex-row items-center gap-2">
+                  <Button
+                    variant="elevated"
+                    className="flex-1 bg-pink-400"
+                  >
+                    Add to cart
+                  </Button>
+                  <Button
+                    variant="elevated"
+                    className="size-12"
+                    onClick={() => { }}
+                    disabled={false}
+                  >
+                    <LinkIcon />
+                  </Button>
+                </div>
+
+                <p className="text-center font-medium">
+                  {data.refundPolicy === "no-refunds"
+                    ? "No refunds"
+                    : `${data.refundPolicy} money back guarantee`
+                  }
+                </p>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-medium">Ratings</h3>
+                  <div className="flex items-center gap-x-1 font-medium">
+                    <StarIcon className="size-4 fill-black" />
+                    <p>({5})</p>
+                    <p className="text-base">{5} ratings</p>
+                  </div>
+                </div>
+
+                <div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
