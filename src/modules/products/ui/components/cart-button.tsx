@@ -13,7 +13,7 @@ export const CartButton = ({ tenantSlug, productId, }: Props) => {
     <Button
       variant="elevated"
       className="flex-1 bg-pink-400"
-      onClick={() => cart.addProduct(productId)}
+      onClick={() => cart.toggleProduct(productId)}
     >
       {cart.isProductInCart(productId)
         ? "Remove from cart"
