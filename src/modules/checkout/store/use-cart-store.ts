@@ -16,7 +16,7 @@ interface CartState {
   getCartByTenant: (tenantSlug: string) => string[];
 }
 
-export const usecartStore = create<CartState>()(
+export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       tenantCarts: {},
