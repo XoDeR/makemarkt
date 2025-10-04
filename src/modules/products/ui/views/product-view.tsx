@@ -1,5 +1,9 @@
 "use client";
 
+import { Fragment } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import { StarRating } from "@/components/star-rating";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -7,10 +11,16 @@ import { formatCurrency, generateTenantUrl } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { LinkIcon, StarIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { Fragment } from "react";
-import { CartButton } from "../components/cart-button";
+// import { CartButton } from "../components/cart-button";
+
+const CartButton = dynamic(
+  () => import("../components/cart-button").then(
+    (mod) => mod.CartButton,
+  ),
+  {
+    ssr: false,
+  },
+)
 
 interface Props {
   productId: string;
