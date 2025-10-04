@@ -19,6 +19,7 @@ const CartButton = dynamic(
   ),
   {
     ssr: false,
+    loading: () => <Button disabled className="flex-1 bg-pink-400">Add to cart</Button>
   },
 )
 
