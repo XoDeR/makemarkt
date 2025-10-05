@@ -1,6 +1,7 @@
 "use client";
 
 import { generateTenantUrl } from "@/lib/utils";
+import { CheckoutButton } from "@/modules/checkout/ui/components/checkout-button";
 import { useTRPC } from "@/trpc/client"
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -29,6 +30,7 @@ export const Navbar = ({ slug }: Props) => {
           )}
           <p className="text-xl">{data.name}</p>
         </Link>
+        <CheckoutButton tenantSlug={slug} />
       </div>
     </nav>
   )
