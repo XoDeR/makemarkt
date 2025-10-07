@@ -6,6 +6,7 @@ import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { CheckoutItem } from "../components/checkout-item";
 
 interface Props {
   tenantSlug: string;
@@ -53,9 +54,6 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
           Checkout sidebar
         </div>
       </div>
-      Checkout View
-      {tenantSlug}
-      {JSON.stringify(data, null, 2)}
     </div>
   )
 }
