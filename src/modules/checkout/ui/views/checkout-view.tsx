@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { CheckoutItem } from "../components/checkout-item";
+import { CheckoutSidebar } from "../components/checkout-sidebar";
+import { InboxIcon, LoaderIcon } from "lucide-react";
 
 interface Props {
   tenantSlug: string;
@@ -16,7 +18,7 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
   const { productIds, removeProduct, clearAllCarts } = useCart(tenantSlug);
 
   const trpc = useTRPC();
-  const { data, error } = useQuery(trpc.checkout.getProducts.queryOptions({
+  const { data, error, isLoading } = useQuery(trpc.checkout.getProducts.queryOptions({
     ids: productIds,
   }));
 
@@ -25,7 +27,28 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
       clearAllCarts(); // removing invalid data
       toast.warning("Invalid products found, cart cleared");
     }
-  }, [error, clearAllCarts])
+  }, [error, clearAllCarts]);
+
+  if (isLoading) {
+    return (
+      <div className="lg:pt-16 pt-4 lg:px-12 px-4">
+        <div className="border border-black border-dashed flex items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
+          <LoaderIcon className="text-muted-foreground animate-spin" />
+        </div>
+      </div>
+    )
+  }
+
+  if (data?.totalDocs === 0) {
+    return (
+      <div className="lg:pt-16 pt-4 lg:px-12 px-4">
+        <div className="border border-black border-dashed flex items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
+          <InboxIcon />
+          <p className="text-base font-medium">No products found</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="lg:pt-16 pt-4 lg:px-12 px-4">
@@ -50,7 +73,12 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
         </div>
         {/* Column 2 Checkout sidebar */}
         <div className="lg:col-span-3">
-          Checkout sidebar
+          <CheckoutSidebar
+            total={data?.totalPrice || 0.0}
+            onCheckout={() => { }}
+            isCanceled={false}
+            isPending={false}
+          />
         </div>
       </div>
     </div>
