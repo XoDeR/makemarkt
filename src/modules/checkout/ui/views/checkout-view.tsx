@@ -36,7 +36,6 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
             {data?.docs.map((product, index) => (
               <CheckoutItem
                 key={product.id}
-                id={product.id}
                 isLast={index === data.docs.length - 1}
                 imageUrl={product.image?.url}
                 name={product.name}
