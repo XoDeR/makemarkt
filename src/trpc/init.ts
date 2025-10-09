@@ -40,4 +40,14 @@ export const protectedProcedure = baseProcedure.use(async ({ ctx, next }) => {
       message: "Not authenticated",
     });
   }
+
+  return next({
+    ctx: {
+      ...ctx,
+      session: {
+        ...session,
+        user: session.user,
+      },
+    },
+  });
 });
