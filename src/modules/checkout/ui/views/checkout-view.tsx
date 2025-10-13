@@ -43,13 +43,16 @@ export const CheckoutView = ({ tenantSlug }: Props) => {
   }));
 
   useEffect(() => {
+    console.log("triggered");
+    // localhost:3000/tenants/john/checkout?success=true
+
     if (states.success) {
-      setStates({ success: false, cancel: false });
+      //setStates({ success: false, cancel: false });
       clearCart();
 
       // TODO: invalidate library here
 
-      router.push("/products");
+      //router.push("/products");
     }
   }, [states.success, clearCart, router, setStates]);
 
