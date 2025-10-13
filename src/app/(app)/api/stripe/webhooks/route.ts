@@ -7,15 +7,11 @@ import { stripe } from "@/lib/stripe";
 import type { ExpandedLineItem } from "@/modules/checkout/types";
 
 export async function POST(req: Request) {
-  const rawBody = await req.arrayBuffer(); // preserves raw bytes
-  const bodyBuffer = Buffer.from(rawBody); // convert to Node-compatible Buffer
-
   let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(
-      //await (await req.blob()).text(),
-      bodyBuffer,
+      await (await req.blob()).text(),
       req.headers.get("stripe-signature") as string,
       process.env.STRIPE_WEBHOOK_SECRET as string,
     );
