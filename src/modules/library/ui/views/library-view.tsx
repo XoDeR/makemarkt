@@ -1,5 +1,7 @@
 import { ArrowLeftIcon } from "lucide-react"
 import Link from "next/link"
+import { ProductList, ProductListSkeleton } from "../components/product-list"
+import { Suspense } from "react"
 
 // Library page has no separate layout, because the layout will not be reused
 export const LibraryView = () => {
@@ -21,7 +23,9 @@ export const LibraryView = () => {
         </div>
       </header>
       <section className="max-w-(--breakpoint-xl) mx-auto px-4 lg:px-12 py-10">
-        {/* Product list */}
+        <Suspense fallback={<ProductListSkeleton />}>
+          <ProductList />
+        </Suspense>
       </section>
     </div>
   )
