@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-//import { StarPicker } from "@/components/star-picker"; TODO
+import { StarPicker } from "@/components/star-picker";
 
 import {
   Form,
@@ -53,6 +53,22 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
         <p className="font-medium">
           {isPreview ? "Your rating:" : "Liked it? Give it a rating"}
         </p>
+        <FormField
+          control={form.control}
+          name="rating"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <StarPicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={isPreview}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="description"
