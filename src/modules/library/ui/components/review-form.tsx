@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 //import { StarPicker } from "@/components/star-picker"; TODO
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+
 import { ReviewGetOneOutput } from "@/modules/reviews/types";
 
 interface Props {
@@ -32,9 +40,58 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
     },
   });
 
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+  }
+
   return (
-    <div>
-      Review form
-    </div>
+    <Form {...form}>
+      <form
+        className="flex flex-col gap-y-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <p className="font-medium">
+          {isPreview ? "Your rating:" : "Liked it? Give it a rating"}
+        </p>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  placeholder="Want to leave a written review?"
+                  disabled={isPreview}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {!isPreview && (
+          <Button
+            variant="elevated"
+            disabled={false}
+            type="submit"
+            size="lg"
+            className="bg-black text-white hover:bg-pink-400 hover:text-primary w-fit"
+          >
+            {initialData ? "Update review" : "Post review"}
+          </Button>
+        )}
+      </form>
+      {isPreview && (
+        <Button
+          onClick={() => setIsPreview(false)}
+          size="lg"
+          type="button"
+          variant="elevated"
+          className="w-fit"
+        >
+          Edit
+        </Button>
+      )}
+    </Form>
   )
 }
