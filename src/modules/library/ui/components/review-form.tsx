@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/form";
 
 import { ReviewGetOneOutput } from "@/modules/reviews/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface Props {
   productId: string;
@@ -32,6 +34,31 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
   // isPreview - we are previewing an existing review
   const [isPreview, setIsPreview] = useState(!!initialData);
 
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const createReview = useMutation(trpc.reviews.create.mutationOptions({
+    onSuccess: () => {
+      queryClient.invalidateQueries(trpc.reviews.getOne.queryOptions({
+        productId,
+      }));
+      setIsPreview(true);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  }));
+  const updateReview = useMutation(trpc.reviews.update.mutationOptions({
+    onSuccess: () => {
+      queryClient.invalidateQueries(trpc.reviews.getOne.queryOptions({
+        productId,
+      }));
+      setIsPreview(true);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  }));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,9 +67,21 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-  }
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (initialData) {
+      updateReview.mutate({
+        reviewId: initialData.id,
+        rating: values.rating,
+        description: values.description,
+      });
+    } else {
+      createReview.mutate({
+        productId,
+        rating: values.rating,
+        description: values.description,
+      });
+    }
+  };
 
   return (
     <Form {...form}>
@@ -88,7 +127,7 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
         {!isPreview && (
           <Button
             variant="elevated"
-            disabled={false}
+            disabled={createReview.isPending || updateReview.isPending}
             type="submit"
             size="lg"
             className="bg-black text-white hover:bg-pink-400 hover:text-primary w-fit"
@@ -103,7 +142,7 @@ export const ReviewForm = ({ productId, initialData }: Props) => {
           size="lg"
           type="button"
           variant="elevated"
-          className="w-fit"
+          className="w-fit mt-4"
         >
           Edit
         </Button>
