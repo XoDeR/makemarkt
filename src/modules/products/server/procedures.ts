@@ -150,9 +150,33 @@ export const productsRouter = createTRPCRouter({
       limit: input.limit,
     });
 
+    // With Promise.all we can use async in map, otherwise it won't work as expected
+    const dataWithSummarizedReviews = await Promise.all(
+      data.docs.map(async (doc) => {
+        const reviewsData = await ctx.db.find({
+          collection: "reviews",
+          pagination: false,
+          where: {
+            product: {
+              equals: doc.id,
+            },
+          },
+        });
+
+        return {
+          ...doc,
+          reviewCount: reviewsData.totalDocs,
+          reviewRating:
+            reviewsData.docs.length === 0
+              ? 0
+              : reviewsData.docs.reduce((acc, review) => acc + review.rating, 0) / reviewsData.totalDocs
+        }
+      })
+    );
+
     return {
       ...data,
-      docs: data.docs.map((doc) => ({
+      docs: dataWithSummarizedReviews.map((doc) => ({
         ...doc,
         image: doc.image as Media | null,
         tenant: doc.tenant as Tenant & { image: Media | null },
