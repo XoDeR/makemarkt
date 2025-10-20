@@ -19,6 +19,7 @@ import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { Config } from './payload-types';
 import { Orders } from './collections/Orders'
 import { Reviews } from './collections/Reviews'
+import { isSuperAdmin } from './lib/access'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,7 +53,7 @@ export default buildConfig({
       },
       userHasAccessToAllTenants: (user) => {
         if (user?.collection === "users") {
-          return Boolean(user.roles?.includes("super-admin"));
+          return isSuperAdmin(user);
         }
         return false;
       },
