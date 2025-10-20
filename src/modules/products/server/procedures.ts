@@ -195,6 +195,7 @@ export const productsRouter = createTRPCRouter({
       limit: input.limit,
     });
 
+    // Note: N+1 query, should be fixed, all reviews for all project ids could be fetched first
     // With Promise.all we can use async in map, otherwise it won't work as expected
     const dataWithSummarizedReviews = await Promise.all(
       data.docs.map(async (doc) => {

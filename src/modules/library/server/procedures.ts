@@ -80,6 +80,7 @@ export const libraryRouter = createTRPCRouter({
       },
     });
 
+    // Note: N+1 query, should be fixed, all reviews for all project ids could be fetched first
     const dataWithSummarizedReviews = await Promise.all(
       productsData.docs.map(async (doc) => {
         const reviewsData = await ctx.db.find({
