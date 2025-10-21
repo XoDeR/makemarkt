@@ -21,6 +21,9 @@ export const productsRouter = createTRPCRouter({
         collection: "products",
         id: input.id,
         depth: 2, // to load "product.image", "product.tenant", "product.tenant.image"
+        select: {
+          content: false,
+        },
       });
 
       let isPurchased = false;
@@ -193,6 +196,9 @@ export const productsRouter = createTRPCRouter({
       sort,
       page: input.cursor,
       limit: input.limit,
+      select: {
+        content: false,
+      },
     });
 
     // Note: N+1 query, should be fixed, all reviews for all project ids could be fetched first
