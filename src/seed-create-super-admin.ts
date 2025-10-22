@@ -19,7 +19,11 @@ const seed = async () => {
   });
 
   const adminAccountId = adminTenantData.docs?.[0]?.stripeAccountId || "";
-  await stripe.accounts.del(adminAccountId);
+  try {
+    await stripe.accounts.del(adminAccountId);
+  } catch (error) {
+    console.error(`Error when trying to delete stripe account: ${adminAccountId}. Complete error log: `, error);
+  }
 
   // Delete tenant
   await payload.delete({
