@@ -48,6 +48,8 @@ export const checkoutRouter = createTRPCRouter({
           message: "Failed to create verification link",
         })
       }
+
+      return { url: accountLink.url };
     }),
   purchase: protectedProcedure
     .input(
