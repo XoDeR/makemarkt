@@ -10,6 +10,7 @@ export const Products: CollectionConfig = {
       const tenant = req.user?.tenants?.[0]?.tenant as Tenant;
       return Boolean(tenant?.stripeDetailsSubmitted); // only if tenant has submitted stripe details
     },
+    delete: ({ req }) => isSuperAdmin(req.user),
     // The rest of the rules are already handled in payload config
   },
   admin: {
