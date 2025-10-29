@@ -66,5 +66,14 @@ export const Products: CollectionConfig = {
           "Protected content only visible to customers after purchase. Add documentation, files, guides and bonus materials. Supports markdown formatting"
       },
     },
-  ]
-}
+    {
+      name: "isArchived",
+      label: "Archive",
+      defaultValue: false,
+      type: "checkbox",
+      admin: {
+        description: "If checked, this product will be archived",
+      },
+    },
+  ],
+};
