@@ -157,6 +157,12 @@ export const productsRouter = createTRPCRouter({
       where["tenant.slug"] = {
         equals: input.tenantSlug,
       };
+    } else {
+      // if tenant is not specified 
+      // then we are on the public storefront and private products are not shown
+      where["isPrivate"] = {
+        not_equals: true,
+      };
     }
 
     if (input.category) {
