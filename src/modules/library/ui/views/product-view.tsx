@@ -5,6 +5,7 @@ import { ArrowLeftIcon } from "lucide-react"
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ReviewSidebar } from "../components/review-sidebar";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 interface Props {
   productId: string;
@@ -41,7 +42,7 @@ export const ProductView = ({ productId }: Props) => {
           <div className="lg:col-span-5">
             {data.content ?
               <p>
-                {data.content}
+                <RichText data={data.content} />
               </p>
               : (
                 <p className="font-medium italic text-muted-foreground">
