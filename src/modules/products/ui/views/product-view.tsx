@@ -12,7 +12,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, LinkIcon, StarIcon } from "lucide-react";
 import { toast } from "sonner";
-import { defaultJSXConverters, RichText } from "@payloadcms/richtext-lexical/react";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 // import { CartButton } from "../components/cart-button";
 
 const CartButton = dynamic(
