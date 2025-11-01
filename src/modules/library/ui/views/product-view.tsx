@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link"
-import { ArrowLeftIcon, DivideCircle } from "lucide-react"
+import { ArrowLeftIcon } from "lucide-react"
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ReviewSidebar } from "../components/review-sidebar";

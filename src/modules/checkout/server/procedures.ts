@@ -139,7 +139,7 @@ export const checkoutRouter = createTRPCRouter({
         totalAmount * (PLATFORM_FEE_PERCENTAGE / 100)
       );
 
-      let domain = generateTenantUrl(input.tenantSlug);
+      const domain = generateTenantUrl(input.tenantSlug);
 
       /*
       if (process.env.NODE_ENV === "development") {

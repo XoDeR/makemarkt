@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { Sort, Where } from "payload";
 import { DEFAULT_LIMIT } from "@/constants";
 import { Media, Tenant } from "@/payload-types";
 import { protectedProcedure, createTRPCRouter } from "@/trpc/init";
