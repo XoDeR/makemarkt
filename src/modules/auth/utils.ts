@@ -10,13 +10,26 @@ export const generateAuthCookie = async ({
   value,
 }: Props) => {
   const cookies = await getCookies();
-  cookies.set({
-    name: `${prefix}-token`,
-    value: value,
-    httpOnly: true,
-    path: "/",
-    //sameSite: "none",
-    //domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
-    //secure: process.env.NODE_ENV === "production",
-  });
+
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const isSubdomainRoutingEnabled = process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING === "true";
+
+  if (isDevelopment || !isSubdomainRoutingEnabled) {
+    cookies.set({
+      name: `${prefix}-token`,
+      value: value,
+      httpOnly: true,
+      path: "/",
+    });
+  } else {
+    cookies.set({
+      name: `${prefix}-token`,
+      value: value,
+      httpOnly: true,
+      path: "/",
+      sameSite: "none",
+      domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
 }
